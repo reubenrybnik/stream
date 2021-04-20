@@ -33,7 +33,7 @@ const build = async (options: RollupOptions, streamOptions: RollupStreamOptions,
 
         stream.push(new vinylDependencies.vinyl({
           path: chunk.fileName,
-          contents: new vinylDependencies.buffer.Buffer(source)
+          contents: vinylDependencies.buffer.Buffer.from(source)
         }));
       } else {
         stream.push(chunk.source);
@@ -44,7 +44,7 @@ const build = async (options: RollupOptions, streamOptions: RollupStreamOptions,
 
         stream.push(new vinylDependencies.vinyl({
           path: chunk.fileName,
-          contents: new vinylDependencies.buffer.Buffer(source)
+          contents: vinylDependencies.buffer.Buffer.from(source)
         }));
       } else {
         stream.push(chunk.code);
