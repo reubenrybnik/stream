@@ -11,7 +11,7 @@ export default {
     commonjs({ include: './node_modules/**' }),
     typescript({ include: '**/*.{ts,js}' })
   ],
-  external: ['path', 'rollup', 'stream'],
+  external: ['buffer', 'path', 'rollup', 'stream', 'through', 'util', 'vinyl'],
   output: [
     { format: 'cjs', file: pkg.main, exports: 'auto' },
     { format: 'es', file: pkg.module }
