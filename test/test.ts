@@ -8,7 +8,7 @@ import rollupStream from '..';
 
 import helpers from './helpers/helpers';
 
-const { read, wait } = helpers;
+const { read, readObjects, wait } = helpers;
 const input = join(__dirname, 'fixtures/batman.js');
 const output: OutputOptions = { format: 'cjs', exports: 'auto' };
 
@@ -17,8 +17,13 @@ test('exports', async (t) => {
   t.is(typeof rollupStream, 'function');
 });
 
-test('return Readable', async (t) => {
+test('return Readable not in object mode when object mode is not specified', async (t) => {
   const stream = rollupStream({}).on('error', () => {});
+  t.is(stream.constructor.name, 'Readable');
+});
+
+test('return Readable in object mode when object mode is specified', async (t) => {
+  const stream = rollupStream({}, { objectMode: true }).on('error', () => { });
   t.is(stream.constructor.name, 'Readable');
 });
 
@@ -39,9 +44,16 @@ test('bundle event', async (t) => {
   t.snapshot(cache.modules[0].code);
 });
 
-test('read content', async (t) => {
+test('read content when object mode is not specified', async (t) => {
   const stream = rollupStream({ input, output });
   const result = await read(stream);
+  t.truthy(result);
+  t.snapshot(result);
+});
+
+test('read output chunk when object mode is specified', async (t) => {
+  const stream = rollupStream({ input, output }, { objectMode: true });
+  const result = await readObjects(stream);
   t.truthy(result);
   t.snapshot(result);
 });
